@@ -58,7 +58,7 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * 单据保存前处理
 	 * @param bo
 	 */
-	private void beforeProess(JsonObject bo) {
+	protected void beforeProess(JsonObject bo) {
 				
 	}
 
@@ -66,7 +66,7 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * 单据保存后处理
 	 * @param bo
 	 */
-	private void afterProcess(JsonObject bo) {
+	protected void afterProcess(JsonObject bo) {
 		
 	}
 
