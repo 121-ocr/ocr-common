@@ -99,7 +99,7 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param bo
 	 * @param future
 	 */
-	private void afterProcess(JsonObject bo, Future<JsonObject> future) {
+	protected void afterProcess(JsonObject bo, Future<JsonObject> future) {
 		future.complete(bo);		
 	}
 
@@ -121,14 +121,6 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 */
 	protected void beforeProess(OtoCloudBusMessage<JsonObject> msg, Future<JsonObject> future) {
 		future.complete(msg.body());		
-	}
-
-	/**
-	 * 单据保存后处理
-	 * @param bo
-	 */
-	protected void afterProcess(OtoCloudBusMessage<JsonObject> msg) {
-		
 	}
 
 	public String getPartnerAcct(JsonObject bo) {
