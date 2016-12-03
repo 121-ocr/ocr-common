@@ -58,11 +58,9 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * 单据保存前处理
 	 * @param msg
 	 */
-<<<<<<< HEAD
-	protected void beforeProess(JsonObject bo) {
-=======
+
 	protected void beforeProess(OtoCloudBusMessage<JsonObject> msg) {
->>>>>>> branch 'develop' of https://github.com/121-ocr/ocr-common.git
+
 				
 	}
 
