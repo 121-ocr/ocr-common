@@ -26,8 +26,12 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 
 		JsonObject bo = msg.body();
 		
+		//前处理
+		beforeProess(bo);
+		
 		String boId = bo.getString("bo_id");
 		//如果没有boid，则调用单据号生成规则生成一个单据号
+		
 		//TODO
 		//交易单据一般要记录协作方
     	String partnerAcct = getPartnerAcct(bo);
@@ -50,6 +54,14 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 
 		});
 	}
+	/**
+	 * 单据保存前处理
+	 * @param bo
+	 */
+	private void beforeProess(JsonObject bo) {
+				
+	}
+
 	/**
 	 * 单据保存后处理
 	 * @param bo
