@@ -27,7 +27,7 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 		JsonObject bo = msg.body();
 		
 		//前处理
-		beforeProess(bo);
+		beforeProess(msg);
 		
 		String boId = bo.getString("bo_id");
 		//如果没有boid，则调用单据号生成规则生成一个单据号
@@ -56,9 +56,13 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	}
 	/**
 	 * 单据保存前处理
-	 * @param bo
+	 * @param msg
 	 */
+<<<<<<< HEAD
 	protected void beforeProess(JsonObject bo) {
+=======
+	protected void beforeProess(OtoCloudBusMessage<JsonObject> msg) {
+>>>>>>> branch 'develop' of https://github.com/121-ocr/ocr-common.git
 				
 	}
 
