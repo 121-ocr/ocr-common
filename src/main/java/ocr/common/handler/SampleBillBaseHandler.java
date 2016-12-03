@@ -68,7 +68,7 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * 单据保存后处理
 	 * @param bo
 	 */
-	protected void afterProcess(JsonObject bo) {
+	protected void afterProcess(OtoCloudBusMessage<JsonObject> msg) {
 		
 	}
 
