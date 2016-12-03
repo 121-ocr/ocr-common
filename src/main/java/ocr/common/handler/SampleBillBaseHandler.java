@@ -43,7 +43,7 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 		this.recordFactData(appActivity.getBizObjectType(), bo, boId, actor, partnerAcct, null, result -> {
 			if (result.succeeded()) {
 				//后续处理
-				afterProcess(bo);
+				afterProcess(msg);
 				msg.reply(bo); //返回BO
 			} else {
 				Throwable errThrowable = result.cause();
