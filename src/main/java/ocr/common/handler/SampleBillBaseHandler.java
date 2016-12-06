@@ -58,10 +58,6 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 		// 自动查找数据源，自动进行分表处理
 		this.recordFactData(appActivity.getBizObjectType(), bo, boId, actor, partnerAcct, null, result -> {
 			if (result.succeeded()) {				
-				String bo_id = result.result();
-				if(boId == null || boId.isEmpty()){
-					bo.put("bo_id", bo_id);
-				}
 				//后续处理
 				afterProcess(bo, ret -> {
 					if (ret.succeeded()) {
