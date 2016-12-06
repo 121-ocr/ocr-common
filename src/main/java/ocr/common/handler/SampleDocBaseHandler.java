@@ -54,7 +54,7 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonArray> {
 		// 记录事实对象（业务数据），会根据ActionDescriptor定义的状态机自动进行状态变化，并发出状态变化业务事件
 		// 自动查找数据源，自动进行分表处理
 		appActivity.getAppDatasource().getMongoClient_oto().save(
-				appActivity.getDBTableName(appActivity.getName()), settingInfos, result -> {
+				appActivity.getDBTableName(appActivity.getBizObjectType()), settingInfos, result -> {
 			if (result.succeeded()) {				
 				JsonArray bos = result.result();
 				//后续处理
