@@ -3,7 +3,6 @@ package ocr.common.handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import otocloud.common.ActionURI;
-import otocloud.framework.app.common.PagingOptions;
 import otocloud.framework.app.function.ActionDescriptor;
 import otocloud.framework.app.function.ActionHandlerImpl;
 import otocloud.framework.app.function.AppActivityImpl;
@@ -39,8 +38,11 @@ public class SampleBillBaseQueryHandler extends ActionHandlerImpl<JsonObject> {
 	public void handle(OtoCloudBusMessage<JsonObject> msg) {
 
 		JsonObject queryParams = msg.body();
-		PagingOptions pagingObj = PagingOptions.buildPagingOptions(queryParams);
-		this.queryFactDataList(appActivity.getBizObjectType(), getStatus(), pagingObj, null, findRet -> {
+		//PagingOptions pagingObj = PagingOptions.buildPagingOptions(queryParams);
+		JsonObject fields = queryParams.getJsonObject("fields");		
+		JsonObject queryCond = queryParams.getJsonObject("query");
+		JsonObject pagingInfo = queryParams.getJsonObject("paging");
+		this.queryLatestFactDataList(appActivity.getBizObjectType(), getStatus(queryParams), fields, pagingInfo, queryCond, null, findRet -> {
 			if (findRet.succeeded()) {
 				msg.reply(findRet.result());
 			} else {
@@ -58,7 +60,7 @@ public class SampleBillBaseQueryHandler extends ActionHandlerImpl<JsonObject> {
 	 * 
 	 * @return
 	 */
-	public String getStatus() {
+	public String getStatus(JsonObject msgBody) {
 		// TODO Auto-generated method stub
 		return null;
 	}
