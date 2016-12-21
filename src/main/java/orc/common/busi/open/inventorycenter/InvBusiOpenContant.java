@@ -16,6 +16,11 @@ public class InvBusiOpenContant {
 
 	public static final String LOCATIONSADDRESS = "queryLocatonsGoodsRelation";
 
+	// sheftsrelation 对外提供查询货位和商品关系地址
+	public static final String SHEFTSRELATIONCOMPONTENNAME = "sheftsrelation-mgr";
+
+	public static final String SHEFTSLOCATIONSADDRESS = "querysheftsGoodsRelation";
+
 	// --预留组件
 
 	public static final String RESERVEDCOMPONTENNAME = "stockreserved";
