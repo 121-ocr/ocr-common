@@ -52,29 +52,54 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 
 		// 当前操作人信息
 		JsonObject actor = ActionContextTransfomer.fromMessageHeaderToActor(headerMap);
-
-		// 记录事实对象（业务数据），会根据ActionDescriptor定义的状态机自动进行状态变化，并发出状态变化业务事件
-		// 自动查找数据源，自动进行分表处理
-		this.recordFactData(appActivity.getBizObjectType(), bo, boId, actor, null, result -> {
-			if (result.succeeded()) {				
-				//后续处理
-				afterProcess(bo, ret -> {
-					if (ret.succeeded()) {
-						msg.reply(ret.result()); //返回BO
-					}else{
-						Throwable errThrowable = ret.cause();
-						String errMsgString = errThrowable.getMessage();
-						appActivity.getLogger().error(errMsgString, errThrowable);
-						msg.fail(100, errMsgString);
-					}
-				});				
-			} else {
-				Throwable errThrowable = result.cause();
-				String errMsgString = errThrowable.getMessage();
-				appActivity.getLogger().error(errMsgString, errThrowable);
-				msg.fail(100, errMsgString);
-			}
-		});		
+		
+		if(bo.containsKey("current_state") && bo.containsKey("bo")){
+			String currentState = bo.getString("current_state");			
+			this.updateFactData(appActivity.getBizObjectType(), bo.getJsonObject("bo"), boId, currentState, actor, null, result -> {
+				if (result.succeeded()) {				
+					//后续处理
+					afterProcess(bo, ret -> {
+						if (ret.succeeded()) {
+							msg.reply(ret.result()); //返回BO
+						}else{
+							Throwable errThrowable = ret.cause();
+							String errMsgString = errThrowable.getMessage();
+							appActivity.getLogger().error(errMsgString, errThrowable);
+							msg.fail(100, errMsgString);
+						}
+					});				
+				} else {
+					Throwable errThrowable = result.cause();
+					String errMsgString = errThrowable.getMessage();
+					appActivity.getLogger().error(errMsgString, errThrowable);
+					msg.fail(100, errMsgString);
+				}
+			});		
+		}else{
+	
+			// 记录事实对象（业务数据），会根据ActionDescriptor定义的状态机自动进行状态变化，并发出状态变化业务事件
+			// 自动查找数据源，自动进行分表处理
+			this.recordFactData(appActivity.getBizObjectType(), bo, boId, actor, null, result -> {
+				if (result.succeeded()) {				
+					//后续处理
+					afterProcess(bo, ret -> {
+						if (ret.succeeded()) {
+							msg.reply(ret.result()); //返回BO
+						}else{
+							Throwable errThrowable = ret.cause();
+							String errMsgString = errThrowable.getMessage();
+							appActivity.getLogger().error(errMsgString, errThrowable);
+							msg.fail(100, errMsgString);
+						}
+					});				
+				} else {
+					Throwable errThrowable = result.cause();
+					String errMsgString = errThrowable.getMessage();
+					appActivity.getLogger().error(errMsgString, errThrowable);
+					msg.fail(100, errMsgString);
+				}
+			});		
+		}
 	}
 
 	/**
