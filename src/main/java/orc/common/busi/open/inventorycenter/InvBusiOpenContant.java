@@ -10,8 +10,12 @@ public class InvBusiOpenContant {
 	// invfacility-mgr 对外提供查询货架
 
 	public static final String FACILITYCOMPONTENNAME = "invfacility-mgr";
-	
+
 	public static final String AREACOMPONTENNAME = "invarea-mgr";
+
+	// unit-mgr 对外提供查询单位
+
+	public static final String UNITCOMPONTENNAME = "invunit-mgr";
 
 	// locationrelation 对外提供查询货位和商品关系地址
 	public static final String LOCATIONRELATIONCOMPONTENNAME = "locationrelation-mgr";
