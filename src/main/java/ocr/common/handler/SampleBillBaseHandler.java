@@ -53,9 +53,11 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 		// 当前操作人信息
 		JsonObject actor = ActionContextTransfomer.fromMessageHeaderToActor(headerMap);
 		
-		if(bo.containsKey("current_state") && bo.containsKey("bo")){
+//		if(bo.containsKey("current_state") && bo.containsKey("bo")){
+		if(bo.containsKey("current_state")){
 			String currentState = bo.getString("current_state");			
-			this.updateFactData(appActivity.getBizObjectType(), bo.getJsonObject("bo"), boId, currentState, actor, null, result -> {
+//			this.updateFactData(appActivity.getBizObjectType(), bo.getJsonObject("bo"), boId, currentState, actor, null, result -> {
+			this.updateFactData(appActivity.getBizObjectType(), bo, boId, currentState, actor, null, result -> {
 				if (result.succeeded()) {				
 					//后续处理
 					afterProcess(bo, ret -> {
