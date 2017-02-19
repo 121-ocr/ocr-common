@@ -12,6 +12,8 @@ public class InvBusiOpenContant {
 	public static final String FACILITYCOMPONTENNAME = "invfacility-mgr";
 
 	public static final String AREACOMPONTENNAME = "invarea-mgr";
+	
+	public static final String SUPPLIERSCOMPONTENNAME = "suppliers-mgr";
 
 	// unit-mgr 对外提供查询单位
 
