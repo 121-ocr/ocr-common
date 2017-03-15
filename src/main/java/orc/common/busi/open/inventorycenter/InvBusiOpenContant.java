@@ -38,5 +38,13 @@ public class InvBusiOpenContant {
 	public static final String RESERVEDCOMPONTENNAME = "stockreserved";
 
 	public static final String QUERYRESERVEDSADDRESS = "getFirstBatch";
+	
+	// 保质期预警
+	public static final String SHELFWARNINGCOMPONTENNAME = "shelfwarning";
+	// 安全库存预警
+	public static final String SAFESTOCKWARNINGCOMPONTENNAME = "safestockwarning";
+	
+	//安全库存
+	public static final String SAFESTOCK = "safestock";
 
 }
