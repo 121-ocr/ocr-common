@@ -3,6 +3,7 @@ package ocr.common.handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import otocloud.common.ActionURI;
+import otocloud.common.SessionSchema;
 import otocloud.framework.app.function.ActionDescriptor;
 import otocloud.framework.app.function.ActionHandlerImpl;
 import otocloud.framework.app.function.AppActivityImpl;
@@ -36,13 +37,20 @@ public class SampleBillBaseQueryHandler extends ActionHandlerImpl<JsonObject> {
 	 */
 	@Override
 	public void handle(OtoCloudBusMessage<JsonObject> msg) {
+		
+		JsonObject session = msg.getSession();
+		boolean is_global_bu =  session.getBoolean(SessionSchema.IS_GLOBAL_BU, true);
+		String bizUnit = null;
+		if(!is_global_bu){
+			bizUnit = session.getString(SessionSchema.BIZ_UNIT_ID, null);
+		}
 
-		JsonObject queryParams = msg.body();
+		JsonObject queryParams = msg.body().getJsonObject("content");
 		//PagingOptions pagingObj = PagingOptions.buildPagingOptions(queryParams);
 		JsonObject fields = queryParams.getJsonObject("fields");		
 		JsonObject queryCond = queryParams.getJsonObject("query");
 		JsonObject pagingInfo = queryParams.getJsonObject("paging");
-		this.queryLatestFactDataList(appActivity.getBizObjectType(), getStatus(queryParams), fields, pagingInfo, queryCond, null, findRet -> {
+		this.queryLatestFactDataList(bizUnit, appActivity.getBizObjectType(), getStatus(queryParams), fields, pagingInfo, queryCond, null, findRet -> {
 			if (findRet.succeeded()) {
 				msg.reply(findRet.result());
 			} else {

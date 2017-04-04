@@ -41,9 +41,9 @@ public class SampleSingleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param result
 	 */
 	private void proess(OtoCloudBusMessage<JsonObject> msg, JsonObject bo) {
-		
+
 		String acctId = this.appActivity.getAppInstContext().getAccount();
-		JsonObject settingInfos = msg.body();
+		JsonObject settingInfos = msg.body().getJsonObject("content");
 		settingInfos.put("account", acctId);
 		
 //		for (Object settingInfo : settingInfos) {

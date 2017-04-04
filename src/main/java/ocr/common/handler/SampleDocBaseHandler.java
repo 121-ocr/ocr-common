@@ -15,7 +15,7 @@ import otocloud.framework.core.OtoCloudBusMessage;
  * @author wanghw
  *
  */
-public class SampleDocBaseHandler extends ActionHandlerImpl<JsonArray> {
+public class SampleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 
 	public SampleDocBaseHandler(AppActivityImpl appActivity) {
 		super(appActivity);
@@ -23,7 +23,7 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonArray> {
 	}
 
 	@Override
-	public void handle(OtoCloudBusMessage<JsonArray> msg) {
+	public void handle(OtoCloudBusMessage<JsonObject> msg) {
 		//前处理
 		beforeProess(msg, result -> {
 			if (result.succeeded()) {
@@ -42,11 +42,18 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonArray> {
 	 * @param msg
 	 * @param result
 	 */
-	private void proess(OtoCloudBusMessage<JsonArray> msg, JsonArray bo) {
+	private void proess(OtoCloudBusMessage<JsonObject> msg, JsonArray bo) {
+		
+/*		JsonObject session = msg.getSession();
+		Long is_global_bu =  session.getLong(SessionSchema.IS_GLOBAL_BU, 1L);
+		String bizUnit = null;
+		if(is_global_bu == 0L){
+			bizUnit = session.getString(SessionSchema.BIZ_UNIT_ID, null);
+		}*/
 		
 		String acctId = this.appActivity.getAppInstContext().getAccount();
-		JsonArray settingInfos = msg.body();
-		for (Object settingInfo : settingInfos) {
+		//JsonArray settingInfos = msg.body()
+		for (Object settingInfo : bo) {
 			((JsonObject)settingInfo).put("account", acctId);
 		}
 		
@@ -54,7 +61,7 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonArray> {
 		// 记录事实对象（业务数据），会根据ActionDescriptor定义的状态机自动进行状态变化，并发出状态变化业务事件
 		// 自动查找数据源，自动进行分表处理
 		appActivity.getAppDatasource().getMongoClient_oto().save(
-				appActivity.getDBTableName(appActivity.getBizObjectType()), settingInfos, result -> {
+				appActivity.getDBTableName(appActivity.getBizObjectType()), bo, result -> {
 			if (result.succeeded()) {				
 				JsonArray bos = result.result();
 				//后续处理
@@ -103,7 +110,7 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonArray> {
 	 * @param msg
 	 */
 
-	private void beforeProess(OtoCloudBusMessage<JsonArray> msg, Handler<AsyncResult<JsonArray>> retHandler) {
+	private void beforeProess(OtoCloudBusMessage<JsonObject> msg, Handler<AsyncResult<JsonArray>> retHandler) {
 		Future<JsonArray> future = Future.future();
 		future.setHandler(retHandler);
 		beforeProess(msg,future);		
@@ -114,8 +121,8 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonArray> {
 	 * @param msg
 	 * @param future
 	 */
-	protected void beforeProess(OtoCloudBusMessage<JsonArray> msg, Future<JsonArray> future) {
-		future.complete(msg.body());		
+	protected void beforeProess(OtoCloudBusMessage<JsonObject> msg, Future<JsonArray> future) {
+		future.complete(msg.body().getJsonArray("content"));		
 	}
 
 	@Override

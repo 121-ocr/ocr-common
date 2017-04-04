@@ -44,7 +44,7 @@ public class SampleSingleDocRemoveHandler extends ActionHandlerImpl<JsonObject> 
 	 */
 	private void proess(OtoCloudBusMessage<JsonObject> msg, JsonObject bo) {
 
-		JsonObject query = msg.body();
+		JsonObject query = msg.body().getJsonObject("content");
 
 		appActivity.getAppDatasource().getMongoClient()
 				.removeDocument(appActivity.getDBTableName(appActivity.getBizObjectType()), query, result -> {
