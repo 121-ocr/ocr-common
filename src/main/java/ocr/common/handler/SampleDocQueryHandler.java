@@ -9,7 +9,7 @@ import otocloud.framework.app.function.ActionDescriptor;
 import otocloud.framework.app.function.ActionHandlerImpl;
 import otocloud.framework.app.function.AppActivityImpl;
 import otocloud.framework.core.HandlerDescriptor;
-import otocloud.framework.core.OtoCloudBusMessage;
+import otocloud.framework.core.CommandMessage;
 
 /**
  * 简单档案查询基类
@@ -33,7 +33,7 @@ public class SampleDocQueryHandler extends ActionHandlerImpl<JsonObject> {
      * 查询
      */
 	@Override
-	public void handle(OtoCloudBusMessage<JsonObject> msg) {
+	public void handle(CommandMessage<JsonObject> msg) {
 		
 		JsonObject session = msg.getSession();
 		boolean is_global_bu =  session.getBoolean(SessionSchema.IS_GLOBAL_BU, true);

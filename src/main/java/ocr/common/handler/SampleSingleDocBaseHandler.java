@@ -6,7 +6,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import otocloud.framework.app.function.ActionHandlerImpl;
 import otocloud.framework.app.function.AppActivityImpl;
-import otocloud.framework.core.OtoCloudBusMessage;
+import otocloud.framework.core.CommandMessage;
 
 /**
  * 档案操作基类（单个）
@@ -21,7 +21,7 @@ public class SampleSingleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 	}
 
 	@Override
-	public void handle(OtoCloudBusMessage<JsonObject> msg) {
+	public void handle(CommandMessage<JsonObject> msg) {
 		//前处理
 		beforeProess(msg, result -> {
 			if (result.succeeded()) {
@@ -40,7 +40,7 @@ public class SampleSingleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param msg
 	 * @param result
 	 */
-	private void proess(OtoCloudBusMessage<JsonObject> msg, JsonObject bo) {
+	private void proess(CommandMessage<JsonObject> msg, JsonObject bo) {
 
 		String acctId = this.appActivity.getAppInstContext().getAccount();
 		JsonObject settingInfos = msg.body().getJsonObject("content");
@@ -101,7 +101,7 @@ public class SampleSingleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param msg
 	 */
 
-	private void beforeProess(OtoCloudBusMessage<JsonObject> msg, Handler<AsyncResult<JsonObject>> retHandler) {
+	private void beforeProess(CommandMessage<JsonObject> msg, Handler<AsyncResult<JsonObject>> retHandler) {
 		Future<JsonObject> future = Future.future();
 		future.setHandler(retHandler);
 		beforeProess(msg,future);		
@@ -112,8 +112,8 @@ public class SampleSingleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param msg
 	 * @param future
 	 */
-	protected void beforeProess(OtoCloudBusMessage<JsonObject> msg, Future<JsonObject> future) {
-		future.complete(msg.body());		
+	protected void beforeProess(CommandMessage<JsonObject> msg, Future<JsonObject> future) {
+		future.complete(msg.getContent());		
 	}
 
 	@Override

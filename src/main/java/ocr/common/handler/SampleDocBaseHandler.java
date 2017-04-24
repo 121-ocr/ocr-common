@@ -7,7 +7,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import otocloud.framework.app.function.ActionHandlerImpl;
 import otocloud.framework.app.function.AppActivityImpl;
-import otocloud.framework.core.OtoCloudBusMessage;
+import otocloud.framework.core.CommandMessage;
 
 /**
  * 档案操作基类（批量）
@@ -15,7 +15,7 @@ import otocloud.framework.core.OtoCloudBusMessage;
  * @author wanghw
  *
  */
-public class SampleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
+public class SampleDocBaseHandler extends ActionHandlerImpl<JsonArray> {
 
 	public SampleDocBaseHandler(AppActivityImpl appActivity) {
 		super(appActivity);
@@ -23,7 +23,7 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 	}
 
 	@Override
-	public void handle(OtoCloudBusMessage<JsonObject> msg) {
+	public void handle(CommandMessage<JsonArray> msg) {
 		//前处理
 		beforeProess(msg, result -> {
 			if (result.succeeded()) {
@@ -42,7 +42,7 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param msg
 	 * @param result
 	 */
-	private void proess(OtoCloudBusMessage<JsonObject> msg, JsonArray bo) {
+	private void proess(CommandMessage<JsonArray> msg, JsonArray bo) {
 		
 /*		JsonObject session = msg.getSession();
 		Long is_global_bu =  session.getLong(SessionSchema.IS_GLOBAL_BU, 1L);
@@ -110,7 +110,7 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param msg
 	 */
 
-	private void beforeProess(OtoCloudBusMessage<JsonObject> msg, Handler<AsyncResult<JsonArray>> retHandler) {
+	private void beforeProess(CommandMessage<JsonArray> msg, Handler<AsyncResult<JsonArray>> retHandler) {
 		Future<JsonArray> future = Future.future();
 		future.setHandler(retHandler);
 		beforeProess(msg,future);		
@@ -121,8 +121,8 @@ public class SampleDocBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param msg
 	 * @param future
 	 */
-	protected void beforeProess(OtoCloudBusMessage<JsonObject> msg, Future<JsonArray> future) {
-		future.complete(msg.body().getJsonArray("content"));		
+	protected void beforeProess(CommandMessage<JsonArray> msg, Future<JsonArray> future) {
+		future.complete(msg.getContent());		
 	}
 
 	@Override

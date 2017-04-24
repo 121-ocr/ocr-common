@@ -15,7 +15,7 @@ import otocloud.framework.app.function.ActionDescriptor;
 import otocloud.framework.app.function.AppActivityImpl;
 import otocloud.framework.app.function.CDOHandlerImpl;
 import otocloud.framework.core.HandlerDescriptor;
-import otocloud.framework.core.OtoCloudBusMessage;
+import otocloud.framework.core.CommandMessage;
 
 /**
  * CDO操作基类
@@ -48,7 +48,7 @@ public class SampleCDOBillBaseQueryHandler extends CDOHandlerImpl<JsonObject> {
 	 * 根据bo_id查询单据
 	 */
 	@Override
-	public void handle(OtoCloudBusMessage<JsonObject> msg) {
+	public void handle(CommandMessage<JsonObject> msg) {
 		
 		JsonObject session = msg.getSession();
 		boolean is_global_bu =  session.getBoolean(SessionSchema.IS_GLOBAL_BU, true);

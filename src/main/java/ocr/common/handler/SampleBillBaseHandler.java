@@ -9,7 +9,7 @@ import otocloud.common.ActionContextTransfomer;
 import otocloud.common.SessionSchema;
 import otocloud.framework.app.function.ActionHandlerImpl;
 import otocloud.framework.app.function.AppActivityImpl;
-import otocloud.framework.core.OtoCloudBusMessage;
+import otocloud.framework.core.CommandMessage;
 
 /**
  * 单据操作基类
@@ -25,7 +25,7 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	}
 
 	@Override
-	public void handle(OtoCloudBusMessage<JsonObject> msg) {
+	public void handle(CommandMessage<JsonObject> msg) {
 		//前处理
 		beforeProess(msg, result -> {
 			if (result.succeeded()) {
@@ -44,7 +44,7 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param msg
 	 * @param result
 	 */
-	private void proess(OtoCloudBusMessage<JsonObject> msg, JsonObject bo) {
+	private void proess(CommandMessage<JsonObject> msg, JsonObject bo) {
 		
 		MultiMap headerMap = msg.headers();
 		
@@ -138,7 +138,7 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param msg
 	 */
 
-	private void beforeProess(OtoCloudBusMessage<JsonObject> msg, Handler<AsyncResult<JsonObject>> retHandler) {
+	private void beforeProess(CommandMessage<JsonObject> msg, Handler<AsyncResult<JsonObject>> retHandler) {
 		Future<JsonObject> future = Future.future();
 		future.setHandler(retHandler);
 		beforeProess(msg,future);		
@@ -149,8 +149,8 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 	 * @param msg
 	 * @param future
 	 */
-	protected void beforeProess(OtoCloudBusMessage<JsonObject> msg, Future<JsonObject> future) {
-		future.complete(msg.body().getJsonObject("content"));		
+	protected void beforeProess(CommandMessage<JsonObject> msg, Future<JsonObject> future) {
+		future.complete(msg.getContent());		
 	}
 
 
