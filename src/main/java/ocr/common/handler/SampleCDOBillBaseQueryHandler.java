@@ -1,21 +1,21 @@
 package ocr.common.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.impl.CompositeFutureImpl;
 import io.vertx.core.json.JsonObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import otocloud.common.ActionURI;
-import otocloud.common.SessionSchema;
 import otocloud.framework.app.common.BizRoleDirection;
 import otocloud.framework.app.function.ActionDescriptor;
 import otocloud.framework.app.function.AppActivityImpl;
 import otocloud.framework.app.function.CDOHandlerImpl;
-import otocloud.framework.core.HandlerDescriptor;
 import otocloud.framework.core.CommandMessage;
+import otocloud.framework.core.HandlerDescriptor;
 
 /**
  * CDO操作基类
@@ -44,18 +44,19 @@ public class SampleCDOBillBaseQueryHandler extends CDOHandlerImpl<JsonObject> {
 		return null;
 	}	
 	
+	public String getBizUnit(CommandMessage<JsonObject> msg){
+		return null;
+	}
+
+	
 	/**
 	 * 根据bo_id查询单据
 	 */
 	@Override
 	public void handle(CommandMessage<JsonObject> msg) {
 		
-		JsonObject session = msg.getSession();
-		boolean is_global_bu =  session.getBoolean(SessionSchema.IS_GLOBAL_BU, true);
-		String bizUnit = null;
-		if(!is_global_bu){
-			bizUnit = session.getString(SessionSchema.BIZ_UNIT_ID, null);
-		}
+		//JsonObject session = msg.getSession();
+		String bizUnit = getBizUnit(msg);
 
 		JsonObject queryParams = msg.body().getJsonObject("content");
 

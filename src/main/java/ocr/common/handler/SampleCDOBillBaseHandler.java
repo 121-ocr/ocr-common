@@ -6,7 +6,6 @@ import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.json.JsonObject;
 import otocloud.common.ActionContextTransfomer;
-import otocloud.common.SessionSchema;
 import otocloud.framework.app.common.BizRoleDirection;
 import otocloud.framework.app.function.AppActivityImpl;
 import otocloud.framework.app.function.CDOHandlerImpl;
@@ -59,6 +58,10 @@ public class SampleCDOBillBaseHandler extends CDOHandlerImpl<JsonObject> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public String getBizUnit(CommandMessage<JsonObject> msg){
+		return null;
+	}
 
 	/**
 	 * 协作方的id必须放在bo里
@@ -70,13 +73,7 @@ public class SampleCDOBillBaseHandler extends CDOHandlerImpl<JsonObject> {
 
 		MultiMap headerMap = msg.headers();
 		
-		JsonObject session = msg.getSession();
-		boolean is_global_bu =  session.getBoolean(SessionSchema.IS_GLOBAL_BU, true);
-		String bizUnit1 = null;
-		if(!is_global_bu){
-			bizUnit1 = session.getString(SessionSchema.BIZ_UNIT_ID, null);
-		}	
-		final String bizUnit = bizUnit1;
+		//JsonObject session = msg.getSession();
 
 		String boId = bo.getString("bo_id");
 		// 当前操作人信息
@@ -84,8 +81,10 @@ public class SampleCDOBillBaseHandler extends CDOHandlerImpl<JsonObject> {
 		String partnerAcct = bo.getString("link_account");
 		// 记录事实对象（业务数据），会根据ActionDescriptor定义的状态机自动进行状态变化，并发出状态变化业务事件
 		// 自动查找数据源，自动进行分表处理
+		
+		String bizUnit = getBizUnit(msg);
 
-		this.recordCDO(null, BizRoleDirection.FROM, partnerAcct, null, this.appActivity.getBizObjectType(), bo, boId,
+		this.recordCDO(bizUnit, BizRoleDirection.FROM, partnerAcct, null, this.appActivity.getBizObjectType(), bo, boId,
 				getPreStatus(), getNewState(), false, false, actor, cdoRet -> {
 					if (cdoRet.succeeded()) {
 						JsonObject stubBo = this.buildStubForCDO(bo, boId, partnerAcct);

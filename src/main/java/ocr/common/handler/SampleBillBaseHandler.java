@@ -6,7 +6,6 @@ import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.json.JsonObject;
 import otocloud.common.ActionContextTransfomer;
-import otocloud.common.SessionSchema;
 import otocloud.framework.app.function.ActionHandlerImpl;
 import otocloud.framework.app.function.AppActivityImpl;
 import otocloud.framework.core.CommandMessage;
@@ -23,6 +22,11 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 		super(appActivity);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public String getBizUnit(CommandMessage<JsonObject> msg){
+		return null;
+	}
+
 
 	@Override
 	public void handle(CommandMessage<JsonObject> msg) {
@@ -48,12 +52,10 @@ public class SampleBillBaseHandler extends ActionHandlerImpl<JsonObject> {
 		
 		MultiMap headerMap = msg.headers();
 		
-		JsonObject session = msg.getSession();
-		boolean is_global_bu =  session.getBoolean(SessionSchema.IS_GLOBAL_BU, true);
-		String bizUnit = null;
-		if(!is_global_bu){
-			bizUnit = session.getString(SessionSchema.BIZ_UNIT_ID, null);
-		}
+		//JsonObject session = msg.getSession();
+		//boolean is_global_bu =  session.getBoolean(SessionSchema.IS_GLOBAL_BU, true);
+		
+		String bizUnit = getBizUnit(msg);
 		
 		String boId = bo.getString("bo_id");
 		//TODO 如果没有boid，则调用单据号生成规则生成一个单据号		

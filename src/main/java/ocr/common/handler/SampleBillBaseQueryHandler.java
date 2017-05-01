@@ -3,12 +3,11 @@ package ocr.common.handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import otocloud.common.ActionURI;
-import otocloud.common.SessionSchema;
 import otocloud.framework.app.function.ActionDescriptor;
 import otocloud.framework.app.function.ActionHandlerImpl;
 import otocloud.framework.app.function.AppActivityImpl;
-import otocloud.framework.core.HandlerDescriptor;
 import otocloud.framework.core.CommandMessage;
+import otocloud.framework.core.HandlerDescriptor;
 
 /**
  * 查询操作基类
@@ -31,6 +30,11 @@ public class SampleBillBaseQueryHandler extends ActionHandlerImpl<JsonObject> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public String getBizUnit(CommandMessage<JsonObject> msg){
+		return null;
+	}
+
 
 	/**
 	 * 处理器
@@ -38,12 +42,8 @@ public class SampleBillBaseQueryHandler extends ActionHandlerImpl<JsonObject> {
 	@Override
 	public void handle(CommandMessage<JsonObject> msg) {
 		
-		JsonObject session = msg.getSession();
-		boolean is_global_bu =  session.getBoolean(SessionSchema.IS_GLOBAL_BU, true);
-		String bizUnit = null;
-		if(!is_global_bu){
-			bizUnit = session.getString(SessionSchema.BIZ_UNIT_ID, null);
-		}
+		//JsonObject session = msg.getSession();
+		String bizUnit = getBizUnit(msg);
 
 		JsonObject queryParams = msg.body().getJsonObject("content");
 		//PagingOptions pagingObj = PagingOptions.buildPagingOptions(queryParams);
